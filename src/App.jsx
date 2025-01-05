@@ -6,9 +6,10 @@ import Log from "./components/Log";
 import { WINNING_COMBINATIONS } from "./winning-combination";
 import GameOver from "./components/GameOver";
 
+//플레이어 정보
 const PLAYERS = {
-  X: 'Player 1',
-  O: 'Player 2',
+  X: "Player 1",
+  O: "Player 2",
 };
 
 // init Board Status
@@ -30,6 +31,7 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
 }
 
+//좌표별 플레이어 정보 저장
 function deriveGameBoard(gameTurns) {
   let gameBoard = [...INITIAL_GAME_BOARD].map((array) => [...array]);
 
@@ -43,14 +45,14 @@ function deriveGameBoard(gameTurns) {
   return gameBoard;
 }
 
+// 승리여부 판단
 function deriveWinner(gameBoard, players) {
   let winner = null;
 
   for (const combination of WINNING_COMBINATIONS) {
-    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].col];
-    const secondSquareSymbol =
-      gameBoard[combination[1].row][combination[1].col];
-    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].col];
+    const firstSquareSymbol  = gameBoard[combination[0].row][combination[0].col];
+    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].col];
+    const thirdSquareSymbol  = gameBoard[combination[2].row][combination[2].col];
 
     if (
       firstSquareSymbol &&
@@ -72,10 +74,13 @@ function App() {
   // 활성화된 플레이어 정보
   const activePlayer = deriveActivePlayer(gameTurns);
 
+  // 현재 게임 진행 보드 상태 
   const gameBoard = deriveGameBoard(gameTurns);
 
+  // 승자 정보
   const winner = deriveWinner(gameBoard, players);
 
+  // 비겼는지
   const hasDraw = gameTurns.length === 9 && !winner;
 
   // GameBoard에서 버튼을 누른 후 이벤트가 끝나면 이후 호출되는 이벤트
@@ -95,16 +100,18 @@ function App() {
     });
   }
 
+  // 게임 종료 후 재시직 버튼 클릭
   function handleRestart() {
     setGameTurns([]);
   }
 
+  // 사용자 이름 변경 시 플레이어 심볼에 해당하는 새로운 이름 업데이트
   function handlePlayerNameChange(symbol, newName) {
-    setPlayers(prevPlayers => {
+    setPlayers((prevPlayers) => {
       return {
         ...prevPlayers,
-        [symbol] : newName,
-      }
+        [symbol]: newName,
+      };
     });
   }
 
